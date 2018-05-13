@@ -31,6 +31,8 @@ shadow_atlas_quad_3 = 4
 script = ExtResource( 1 )
 _sections_unfolded = [ "Render Target", "Rendering" ]
 sun_position = Vector3( 0, 1, 0 )
+night_sky = null
+rotate_night_sky = Basis( 1, 0, 0, 0, 1, 0, 0, 0, 1 )
 
 [node name="Sky" parent="." index="0" instance=ExtResource( 2 )]
 

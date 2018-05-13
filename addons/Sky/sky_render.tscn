@@ -6,6 +6,18 @@
 
 render_priority = 0
 shader = ExtResource( 1 )
+shader_param/earth_radius_km = null
+shader_param/atmo_radius_km = null
+shader_param/cam_height_m = null
+shader_param/sun_pos = null
+shader_param/sun_intensity = null
+shader_param/rayleigh_coeff = null
+shader_param/mie_coeff = null
+shader_param/rayleigh_scale = null
+shader_param/mie_scale = null
+shader_param/mie_scatter_dir = null
+shader_param/rotate_night_sky = Basis( 1, 0, 0, 0, 1, 0, 0, 0, 1 )
+_sections_unfolded = [ "shader_param" ]
 
 [node name="Sky" type="ColorRect" index="0"]
 

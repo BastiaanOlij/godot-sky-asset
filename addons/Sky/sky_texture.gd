@@ -4,6 +4,7 @@ signal sky_updated
 
 export var sun_position = Vector3(0.0, 1.0, 0.0) setget set_sun_position, get_sun_position
 export (Texture) var night_sky = null setget set_night_sky, get_night_sky
+export (Basis) var rotate_night_sky = Basis() setget set_rotate_night_sky, get_rotate_night_sky
 
 onready var material = $Sky.material
 var trigger_count = 0
@@ -29,10 +30,20 @@ func set_night_sky(new_texture):
 func get_night_sky():
 	return night_sky
 
-func set_time_of_day(hours, directional_light, horzontal_angle = 0.0):
+func set_rotate_night_sky(new_basis):
+	rotate_night_sky = new_basis
+	if material:
+		# set the inverse of our rotation to get the right effect
+		material.set_shader_param("rotate_night_sky", rotate_night_sky.inverse())
+		_trigger_update_sky()
+
+func get_rotate_night_sky():
+	return rotate_night_sky
+
+func set_time_of_day(hours, directional_light, horizontal_angle = 0.0):
 	var sun_position = Vector3(0.0, -100.0, 0.0)
 	sun_position = sun_position.rotated(Vector3(1.0, 0.0, 0.0), hours * PI / 12.0)
-	sun_position = sun_position.rotated(Vector3(0.0, 1.0, 0.0), horzontal_angle)
+	sun_position = sun_position.rotated(Vector3(0.0, 1.0, 0.0), horizontal_angle)
 	
 	if directional_light:
 		var t = directional_light.transform
@@ -72,6 +83,7 @@ func copy_to_environment(environment):
 func _ready():
 	# re-assign so our material gets updated, this will also trigger an update
 	set_night_sky(night_sky)
+	set_rotate_night_sky(rotate_night_sky)
 	set_sun_position(sun_position)
 
 func _trigger_update_sky():

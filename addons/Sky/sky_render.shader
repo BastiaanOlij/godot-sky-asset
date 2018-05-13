@@ -12,6 +12,7 @@ uniform float mie_scale = 120;
 uniform float mie_scatter_dir = 0.758;
 
 uniform sampler2D night_sky : hint_black_albedo;
+uniform mat3 rotate_night_sky;
 
 // Atmosphere code from: https://github.com/wwwtyro/glsl-atmosphere
 vec2 rsi(vec3 r0, vec3 rd, float sr) {
@@ -135,6 +136,26 @@ vec3 ray_dir_from_uv(vec2 uv) {
 	return dir;
 }
 
+vec2 uv_from_ray_dir(vec3 dir) {
+	float PI = 3.14159265358979;
+	vec2 uv;
+	
+	uv.y = acos(dir.y) / PI;
+	
+	dir.y = 0.0;
+	dir = normalize(dir);
+	uv.x = acos(dir.z) / (2.0 * PI);
+	if (dir.x < 0.0) {
+		uv.x = 1.0 - uv.x;
+	}
+	uv.x = 0.5 - uv.x;
+	if (uv.x < 0.0) {
+		uv.x += 1.0;
+	}
+	
+	return uv;
+}
+
 void fragment() {
 	vec3 dir = ray_dir_from_uv(UV);
 	
@@ -156,11 +177,13 @@ void fragment() {
 	// Apply exposure.
 	color = 1.0 - exp(-1.0 * color);
 	
-	// mix in night sky
+	// Mix in night sky (already sRGB)
 	if (dir.y > 0.0) {
 		float f = (0.21 * color.r) + (0.72 * color.g) + (0.07 * color.b);
-		float cutoff = 0.2;
-		color = color + texture(night_sky, UV).rgb * clamp((cutoff - f) / cutoff, 0.0, 1.0);
+		float cutoff = 0.1;
+		
+		vec2 ns_uv = uv_from_ray_dir(rotate_night_sky * dir);
+		color += texture(night_sky, ns_uv).rgb * clamp((cutoff - f) / cutoff, 0.0, 1.0);
 	}
 	
 	COLOR = vec4(color, 1.0);

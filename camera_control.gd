@@ -18,8 +18,8 @@ func _input(event):
 			angle_x -= event.relative.y;
 			angle_y -= event.relative.x;
 			
-			if angle_x > 15:
-				angle_x = 15
+			if angle_x > 35:
+				angle_x = 35
 			elif angle_x < -85:
 				angle_x = -85
 			
