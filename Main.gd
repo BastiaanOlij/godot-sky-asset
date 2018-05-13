@@ -4,7 +4,7 @@ var base_night_sky_rotation = Basis(Vector3(1.0, 1.0, 1.0).normalized(), 1.2)
 var horizontal_angle = 25.0
 
 func _set_sky_rotation():
-	var rot = Basis(Vector3(1.0, 0.0, 0.0), $Time_Of_Day.value * PI / 12.0) * Basis(Vector3(0.0, 1.0, 0.0), deg2rad(horizontal_angle))
+	var rot = Basis(Vector3(0.0, 1.0, 0.0), deg2rad(horizontal_angle)) * Basis(Vector3(1.0, 0.0, 0.0), $Time_Of_Day.value * PI / 12.0)
 	rot = rot * base_night_sky_rotation;
 	$Sky_texture.set_rotate_night_sky(rot)
 
