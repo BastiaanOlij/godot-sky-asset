@@ -67,15 +67,8 @@ func copy_to_environment(environment):
 	# first clear our texture
 	sky.set_panorama(null)
 	
-	# lets copy our viewport texture into an image texture
-	# this is a bit wasteful but it was the only way to get reflections to work
-	var image_texture = ImageTexture.new()
-	image_texture.resource_local_to_scene = true
-	image_texture.create_from_image(get_texture().get_data())
-	
-	# now assign our new texture (which may be the one we had hence clearing first to trigger the reprocessing)
-	# sky.set_panorama(texture)
-	sky.set_panorama(image_texture)
+	# with our proxy fix #18159 (Thanks ShyRed!) in place we don't need the expensive copy anymore
+	sky.set_panorama(get_texture())
 
 #######################################################################################
 # internal
