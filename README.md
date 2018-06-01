@@ -40,6 +40,13 @@ func _on_Sky_texture_sky_updated():
 	$Sky_texture.copy_to_environment(get_viewport().get_camera().environment)
 ```
 
+*Note*, alternatively if you are using a WorldEnvironment use:
+```
+func _on_Sky_texture_sky_updated():
+	$Sky_texture.copy_to_environment($WorldEnvironment.environment)
+```
+But be aware of scope, the sky texture viewport must be in the same scene as the world environment.
+
 If you want a nice night sky an option was added to use a panoramic sky texture with stars that is mixed in when the sky gets dark. Just assign this to the night sky property of the viewport.
 I'm still looking into adding a reprojection here.
 
